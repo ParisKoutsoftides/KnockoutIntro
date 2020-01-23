@@ -4,14 +4,13 @@ using KnockoutIntro.Models;
 
 namespace KnockoutIntro
 {
-    public class LibraryContext : DbContext
+    public class BookContext : DbContext
     {
-        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
+        public BookContext(DbContextOptions<BookContext> options) : base(options)
         {
-            
 
         }
-
+        
         public DbSet<Book> Books { get; set; }
 
         public DbSet<Author> Authors { get; set; }

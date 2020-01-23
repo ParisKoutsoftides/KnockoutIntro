@@ -24,6 +24,11 @@ test-results/
 # Icon must end with two \r
 Icon
 
+# Local Database content
+.db
+.db-shm
+.db-wal
+
 
 # Thumbnails
 ._*

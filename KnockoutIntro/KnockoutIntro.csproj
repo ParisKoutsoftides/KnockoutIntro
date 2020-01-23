@@ -6,4 +6,34 @@
 
 
 
+  <ItemGroup>
+    <PackageReference Include="knockoutjs" Version="3.5.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="DAL\" />
+    <Folder Include="Views\Author\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\EmptyClass.cs" />
+    <Compile Remove="Models\DatabaseContext.cs" />
+    <Compile Remove="Views\Author\Edit.cshtml.cs" />
+    <Compile Remove="Views\Author\Details.cshtml.cs" />
+    <Compile Remove="Views\Author\Delete.cshtml.cs" />
+    <Compile Remove="Views\Author\Index.cshtml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="library.db" />
+    <None Remove="Views\Author\.DS_Store" />
+  </ItemGroup>
 </Project>

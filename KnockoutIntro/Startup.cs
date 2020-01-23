@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace KnockoutIntro
 {
@@ -24,6 +26,11 @@ namespace KnockoutIntro
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+                
+            services.AddDbContext<BookContext>(options => options.UseSqlite(Configuration.GetConnectionString("BookContext")));
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,9 +49,11 @@ namespace KnockoutIntro
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -52,6 +61,15 @@ namespace KnockoutIntro
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "author",
+                    pattern: "{controller=Author}/{action=Index}/{id?}");
+            });
+
         }
+
     }
 }

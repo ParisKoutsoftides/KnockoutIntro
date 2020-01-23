@@ -1,93 +1,151 @@
+using KnockoutIntro.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
 namespace KnockoutIntro.Controllers
 {
-    public class AuthorsController : Controller
+    public class AuthorController : Controller
     {
-        // GET: Authors
-        public ActionResult Index()
+        private readonly BookContext _context;
+
+        public AuthorController(BookContext context)
         {
-            return View();
+            _context = context;
         }
 
-        // GET: Authors/Details/5
-        public ActionResult Details(int id)
+        // GET: Author
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Authors.ToListAsync());
         }
 
-        // GET: Authors/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var author = await _context.Authors.Include(a => a.Books).FirstOrDefaultAsync(m => m.Id == id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            if(author.Books.Count == 0)
+            {
+                ViewData["BooksNullBool"] = true;
+            } else
+            {
+                ViewData["BooksNullBool"] = false;
+            }
+
+            return View(author);
         }
 
-        // POST: Authors/Create
+        public IActionResult Create()
+        {
+            return View(new Author
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Biography = "Testerino"
+            });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Biography")] Author author)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                _context.Add(author);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(author);
         }
 
-        // GET: Authors/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var author = await _context.Authors.FindAsync(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+            return View(author);
         }
 
-        // POST: Authors/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Biography")] Author author)
         {
-            try
+            if (id != author.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(author);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AuthorExists(author.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(author);
         }
 
-        // GET: Authors/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var author = await _context.Authors.FirstOrDefaultAsync(m => m.Id == id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            return View(author);
         }
 
-        // POST: Authors/Delete/5
-        [HttpPost]
+
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var author = await _context.Authors.FindAsync(id);
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+        private bool AuthorExists(int id)
+        {
+            return _context.Authors.Any(e => e.Id == id);
         }
     }
 }
