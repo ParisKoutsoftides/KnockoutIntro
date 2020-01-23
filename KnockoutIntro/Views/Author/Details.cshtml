@@ -30,7 +30,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
 </div>
 <br />
 @if ((bool)ViewData["BooksNullBool"])
@@ -84,9 +84,9 @@ else
                         @Html.DisplayFor(modelItem => item.ImageUrl)
                     </td>
                     <td>
-                        <a asp-controller="Books" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-controller="Books" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-warning" asp-controller="Book" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-info" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }
@@ -95,5 +95,5 @@ else
 }
 
 <div>
-    <a asp-action="Index">Back to List of Authors</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List of Authors</a>
 </div>
