@@ -69,6 +69,13 @@ namespace KnockoutIntro
                     pattern: "{controller=Author}/{action=Index}/{id?}");
             });
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "book",
+                    pattern: "{controller=Book}/{action=Index}/{id?}");
+            });
+
         }
 
     }

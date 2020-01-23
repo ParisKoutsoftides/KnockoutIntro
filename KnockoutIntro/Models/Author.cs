@@ -13,11 +13,7 @@ namespace KnockoutIntro.Models
 
        public string Biography { get; set; }
 
-       public virtual ICollection<Book> Books {
-            get;
+       public virtual ICollection<Book> Books { get; set; }
 
-            set;
-        }
-       
     }
 }
