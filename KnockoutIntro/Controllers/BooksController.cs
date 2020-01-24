@@ -40,6 +40,8 @@ namespace KnockoutIntro.Controllers
 
         public IActionResult Create()
         {
+
+            ViewData["authors"] = _context.Authors.ToList();
             return View(new Book
             {
                 Title = "Test",
@@ -54,6 +56,10 @@ namespace KnockoutIntro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Isbn,Synopsis,Description,ImageUrl")] Book book)
         {
+
+            book.Id = _context.Books.Count() + 1;
+            book.author = _context.Authors.Find(book.AuthorId);
+
             if (ModelState.IsValid)
             {
                 _context.Add(book);
@@ -81,7 +87,7 @@ namespace KnockoutIntro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Isbn,Synopsis,Description,ImageUrl")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorId,Title,Isbn,Synopsis,Description,ImageUrl")] Book book)
         {
             if (id != book.Id)
             {
