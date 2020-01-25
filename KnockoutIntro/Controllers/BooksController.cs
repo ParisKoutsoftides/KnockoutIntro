@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace KnockoutIntro.Controllers
 {
     public class BookController : Controller
@@ -41,7 +44,21 @@ namespace KnockoutIntro.Controllers
         public IActionResult Create()
         {
 
-            ViewData["authors"] = _context.Authors.ToList();
+            var authors = _context.Authors.ToList();
+
+            var authorsArray = authors.ToArray();
+
+
+
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                StringEscapeHandling = StringEscapeHandling.EscapeHtml
+            };
+
+            string json = JsonConvert.SerializeObject(authorsArray, settings);
+
+            ViewData["authors"] = json;
             return View(new Book
             {
                 Title = "Test",
@@ -52,9 +69,11 @@ namespace KnockoutIntro.Controllers
             });
         }
 
+        //Bind("Id,AuthorId,Title,Isbn,Synopsis,Description,ImageUrl")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Isbn,Synopsis,Description,ImageUrl")] Book book)
+        public async Task<IActionResult> Create(Book book)
         {
 
             book.Id = _context.Books.Count() + 1;
@@ -87,7 +106,7 @@ namespace KnockoutIntro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorId,Title,Isbn,Synopsis,Description,ImageUrl")] Book book)
+        public async Task<IActionResult> Edit(int id, Book book)
         {
             if (id != book.Id)
             {

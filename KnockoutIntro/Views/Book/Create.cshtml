@@ -1,8 +1,8 @@
 ﻿@model KnockoutIntro.Models.Book
 
-
 @{
     ViewData["Title"] = "Create";
+   
 }
 
 <h1>Create</h1>
@@ -44,6 +44,11 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="authorId">Select Author</label>
+                <select class="form-control" data-bind="options: availableAuthors, value: selectedAuthor, optionsText: function(item) { return item.FirstName }, optionsValue: function(item) { return item.Id } , optionsCaption:'Select Author...'">
+                </select>
+            </div>
+            <div class="form-group">
                 <button data-bind="click: save" type="" class="btn btn-primary">Submit</button>
             </div>
         </form>
@@ -53,9 +58,68 @@
 <div>
     <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
+<script>
+    var authors = @Html.Raw(ViewData["authors"]);
+    function Book(data) {
+        this.id = data.id;
+        this.lastName = data.title;
+        this.city = data.isbn;
+        this.country = data.synopsis;
+        this.phone = data.description;
+        this.imageUrl = data.imageUrl;
+        this.authorId = data.selectedAuthor;
+    }
 
+    function bookViewModel() {
+        var self = this;
+        self.title = ko.observable("");
+        self.isbn = ko.observable("");
+        self.synopsis = ko.observable("");
+        self.description = ko.observable("");
+        self.imageUrl = ko.observable("");
+        self.availableAuthors = ko.observableArray(authors);
+        self.selectedAuthor = ko.observable();
+
+        self.result = ko.computed(function () {
+            return {
+            Title: self.title(),
+            Isbn: self.isbn(),
+            Synopsis: self.synopsis(),
+            Description: self.description(),
+            ImageUrl: self.description(),
+            AuthorId: self.selectedAuthor()
+            }
+        });
+
+        self.save = function () {
+            var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
+            console.log(antiForgeryToken);
+            console.log(ko.toJSON(self.result()));
+            $.ajax("/Book/Create", {
+                beforeSend: function (request) {
+                    request.setRequestHeader("RequestVerificationToken", antiForgeryToken);
+                },
+                data: ko.toJS(self.result()),
+                type: "POST",
+                contentType: 'application/x-www-form-urlencoded',
+
+            })
+            .done(function (msg) {
+                console.log("done!!")
+                console.log(msg);
+                window.location = "/Home/Index";
+            })
+            .fail(function (msg) {
+                console.log("failed!!")
+                console.log(msg);
+            });
+        };
+    };
+
+    ko.applyBindings(new bookViewModel());
+
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-<script src="~/js/ViewModels/createBook.js" asp-append-version="true"></script>
