@@ -69,8 +69,6 @@ namespace KnockoutIntro.Controllers
             });
         }
 
-        //Bind("Id,AuthorId,Title,Isbn,Synopsis,Description,ImageUrl")]
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Book book)

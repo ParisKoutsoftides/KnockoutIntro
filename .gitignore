@@ -25,9 +25,9 @@ test-results/
 Icon
 
 # Local Database content
-.db
-.db-shm
-.db-wal
+*.db
+*.db-shm
+*.db-wal
 
 
 # Thumbnails

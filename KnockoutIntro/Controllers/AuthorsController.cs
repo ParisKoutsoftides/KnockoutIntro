@@ -59,8 +59,9 @@ namespace KnockoutIntro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Biography")] Author author)
+        public async Task<IActionResult> Create(Author author)
         {
+            author.Id = _context.Authors.Count() + 1;
             if (ModelState.IsValid)
             {
                 _context.Add(author);

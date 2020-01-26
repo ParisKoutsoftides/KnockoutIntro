@@ -60,16 +60,6 @@
 </div>
 <script>
     var authors = @Html.Raw(ViewData["authors"]);
-    function Book(data) {
-        this.id = data.id;
-        this.lastName = data.title;
-        this.city = data.isbn;
-        this.country = data.synopsis;
-        this.phone = data.description;
-        this.imageUrl = data.imageUrl;
-        this.authorId = data.selectedAuthor;
-    }
-
     function bookViewModel() {
         var self = this;
         self.title = ko.observable("");
@@ -107,7 +97,7 @@
             .done(function (msg) {
                 console.log("done!!")
                 console.log(msg);
-                window.location = "/Home/Index";
+                window.location = "/Book/Index";
             })
             .fail(function (msg) {
                 console.log("failed!!")
