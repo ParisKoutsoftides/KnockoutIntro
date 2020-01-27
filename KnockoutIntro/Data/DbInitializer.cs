@@ -21,9 +21,9 @@ namespace KnockoutIntro.Data
 
             var books = new List<Book>
             {
-                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author},
-                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author},
-                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author}
+                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="This is Bob's book", ImageUrl="Url test", author=author},
+                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="This is Bob's book", ImageUrl="Url test", author=author},
+                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="This is Bob's book", ImageUrl="Url test", author=author}
 
             };
 
@@ -37,9 +37,9 @@ namespace KnockoutIntro.Data
 
             var books1 = new List<Book>
             {
-                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author1},
-                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author1},
-                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author1}
+                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="This is Jim's book", ImageUrl="Url test", author=author1},
+                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="This is Jim's book", ImageUrl="Url test", author=author1},
+                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="This is Jim's book", ImageUrl="Url test", author=author1}
 
             };
 
@@ -51,9 +51,9 @@ namespace KnockoutIntro.Data
 
             var books2 = new List<Book>
             {
-                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author2},
-                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author2},
-                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="Testerino", ImageUrl="Url test", author=author2}
+                new Book{Title="Test1", Isbn="123456", Synopsis="Testerino", Description="This is Paul's book", ImageUrl="Url test", author=author2},
+                new Book{Title="Test2", Isbn="123456", Synopsis="Testerino", Description="This is Paul's book", ImageUrl="Url test", author=author2},
+                new Book{Title="Test3", Isbn="123456", Synopsis="Testerino", Description="This is Paul's book", ImageUrl="Url test", author=author2}
 
             };
 

@@ -88,6 +88,21 @@ namespace KnockoutIntro.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var authors = _context.Authors.ToList();
+
+            var authorsArray = authors.ToArray();
+
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                StringEscapeHandling = StringEscapeHandling.EscapeHtml
+            };
+
+            string json = JsonConvert.SerializeObject(authorsArray, settings);
+
+            ViewData["authors"] = json;
+
             if (id == null)
             {
                 return NotFound();
@@ -106,15 +121,19 @@ namespace KnockoutIntro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Book book)
         {
+
             if (id != book.Id)
             {
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var tempAuthor = _context.Authors.Find(book.AuthorId+1);
+                    book.author = tempAuthor;
                     _context.Update(book);
                     await _context.SaveChangesAsync();
                 }

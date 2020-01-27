@@ -83,8 +83,6 @@
 
         self.save = function () {
             var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
-            console.log(antiForgeryToken);
-            console.log(ko.toJSON(self.result()));
             $.ajax("/Book/Create", {
                 beforeSend: function (request) {
                     request.setRequestHeader("RequestVerificationToken", antiForgeryToken);
@@ -95,12 +93,10 @@
 
             })
             .done(function (msg) {
-                console.log("done!!")
                 console.log(msg);
                 window.location = "/Book/Index";
             })
             .fail(function (msg) {
-                console.log("failed!!")
                 console.log(msg);
             });
         };
