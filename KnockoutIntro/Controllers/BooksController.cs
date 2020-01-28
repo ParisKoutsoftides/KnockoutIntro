@@ -59,14 +59,7 @@ namespace KnockoutIntro.Controllers
             string json = JsonConvert.SerializeObject(authorsArray, settings);
 
             ViewData["authors"] = json;
-            return View(new Book
-            {
-                Title = "Test",
-                Isbn = "Test",
-                Synopsis = "Testerino",
-                Description = "Test",
-                ImageUrl = "Test"
-            });
+            return View();
         }
 
         [HttpPost]

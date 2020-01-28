@@ -10,30 +10,36 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @using (Html.BeginForm("Create", "Author", FormMethod.Post, new { data_bind = "submit: validateAndSave" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                <label class="control-label col-sm-2" for="firstName">First Name</label>
-                <div class="col-sm-10">
-                    <input data-bind="value: firstName" type="text" class="form-control" id="firstName" placeholder="First Name..." name="firstName">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", data_bind = "value: firstName", placeholder="First Name..."} })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="form-group">
-                <label class="control-label col-sm-2" for="lastName">Last Name</label>
-                <div class="col-sm-10">
-                    <input data-bind="value: lastName" type="text" class="form-control" id="lastName" placeholder="Last Name..." name="lastName">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", data_bind = "value: lastName", placeholder = "Last Name..." } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="form-group">
-                <label class="control-label col-sm-2" for="biography">Biography</label>
-                <div class="col-sm-10">
-                    <input data-bind="value: biography" type="text" class="form-control" id="biography" placeholder="Biography..." name="biography">
+                @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Biography, new { htmlAttributes = new { @class = "form-control", data_bind = "value: biography", placeholder = "Biography..." } })
+                    @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+        }
     </div>
 </div>
 
@@ -44,6 +50,7 @@
 <script>
     function authorViewModel() {
         var self = this;
+
         self.firstName = ko.observable("");
         self.lastName = ko.observable("");
         self.biography = ko.observable("");
@@ -56,10 +63,13 @@
             }
         });
 
-        self.save = function () {
+        self.validateAndSave = function (form) {
+
+            if (!$(form).valid())
+                return false;
+
+
             var antiForgeryToken = $("input[name=__RequestVerificationToken]").val();
-            console.log(antiForgeryToken);
-            console.log(ko.toJSON(self.result()));
             $.ajax("/Author/Create", {
                 beforeSend: function (request) {
                     request.setRequestHeader("RequestVerificationToken", antiForgeryToken);
@@ -67,16 +77,15 @@
                 data: ko.toJS(self.result()),
                 type: "POST",
                 contentType: 'application/x-www-form-urlencoded',
-
-            })
-            .done(function (msg) {
-                console.log("done!!")
-                console.log(msg);
-                window.location = "/Author/Index";
-            })
-            .fail(function (msg) {
-                console.log("failed!!")
-                console.log(msg);
+                success: function () {
+                    console.log("sucess");
+                    $('.body-content').prepend('<div class="alert alert-success"><strong>Success!</strong> The new author has been saved.</div>');
+                    setTimeout(function () { location.href = './'; }, 1000);
+                },
+                error: function () {
+                    console.log("fail");
+                    $('.body-content').prepend('<div class="alert alert-danger"><strong>Error!</strong> There was an error creating the author.</div>');
+                }
             });
         };
     };
